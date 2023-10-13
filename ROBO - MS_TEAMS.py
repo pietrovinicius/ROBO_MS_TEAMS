@@ -3,6 +3,7 @@
 # ROBO - MICROSOFT TEAMS
 import pyautogui as py
 import pandas
+import datetime
 import time
 import sys
 
@@ -16,7 +17,11 @@ def pausa(tempo):
     time.sleep(tempo)
         
 print("============================== inicio ========================")
-pausa(2)
+agora = datetime.datetime.now()    
+print("Agora: " , str(agora))    
+agora = agora.strftime("%d/%m/%Y %H:%M:%S")
+py.alert(title="==== Início ====" , text="Robo Inicializado: " + str(agora) , timeout=5000) 
+pausa(1)
 print("hotkey win")
 py.hotkey("win")
 pausa(1)
@@ -31,11 +36,12 @@ while chave:
     if varia:
         contador = contador + 1
         print(f"TEAMS ICONE PIETROW(346,254): {contador}x")
-        #py.click(356 , 271)
-        py.click(346,254 , duration=1)        
+        #py.click(346,254 , duration=1)            
+        py.click(148,314)
         varia=False
     elif (varia==False):
         contador = contador + 1
         print(f"TEAMS ICONE RECENTE(232,443): {contador}x")     
-        py.click(232,443 , duration=1) 
+        #py.click(232,443 , duration=1)
+        py.click(223,174 , duration=1) 
         varia=True
