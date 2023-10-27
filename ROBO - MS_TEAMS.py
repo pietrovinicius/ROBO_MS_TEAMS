@@ -45,7 +45,7 @@ try:
             with open("log.txt" , "a") as log:
                 log.write("")
                         
-    with open("log.txt" , "a") as log:
+    with open("log.txt" , "a", encoding="utf-8-sig")  as log:
         #log.write(f"\nAgora: {str(agora)}")           
         print("Agora: " , str(agora()))            
         py.alert(title="==== Início ====" , text="Robo Inicializado: " + str(agora()) , timeout=5000) 
