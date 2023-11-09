@@ -2,12 +2,10 @@
 #@PLima
 # ROBO - MICROSOFT TEAMS
 import pyautogui as py
-import pandas
 import datetime
 import time
 import re
 import os
-import sys
 
 #para sair da automacao colocando o mouse no topo a esquerda da janela
 py.FAILSAFE = False
@@ -24,6 +22,15 @@ def agora():
     agora = datetime.datetime.now()
     agora = agora.strftime("%d/%m/%Y %H:%M:%S")
     return str(agora)
+
+def logi(texto_):
+    if not os.path.exists("log.txt"):
+            with open("log.txt" , "a" , encoding="utf-8-sig") as log:
+                print(f'Log é {os.path.exists("log.txt")}, então será criado na pasta')
+                log.write("")
+                        
+    with open("log.txt" , "a", encoding="utf-8-sig")  as log:
+        log.write(f"\n{str(texto_)} - {str(agora())}")    
 
 contador_ultimo = 0
 #abrindo log.txt para leitura
@@ -77,13 +84,18 @@ try:
                     #py.click(232,443 , duration=1)
                     py.click(223,174 , duration=1) 
                     varia=True
-        except KeyboardInterrupt:
-            log.close()
+        except KeyboardInterrupt:            
             print("Interrompido pelo ctrl + c!!!")            
-            print(f"log.close()\n{agora()}:  {str(contador)}x\n==================================== FIM ====================================")
+            print(f"log.close() - {agora()}:  {str(contador)}x\n==================================== FIM ====================================")
+            error = str("{agora()}\nError: {erro}")
+            #logi("Interrompido pelo ctrl + c!!!")
         except Exception as erro:
             log.close()
-            print(f"log.close()\n{agora()}\nErro: {erro=}, {type(erro)=}")                  
+            print(f"log.close() {agora()}\nErro: {erro=}, {type(erro)=}")  
+            error = str("{agora()}\nError: {erro}")
+            #logi(error)                
     log.close()
 except Exception as erro:
-   print(f"\n{agora()}\nError: {erro}")  
+    print(f"\n{agora()}\nError: {erro}")  
+    error = str("{agora()}\nError: {erro}")
+    #logi(error)
