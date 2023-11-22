@@ -6,6 +6,7 @@ import datetime
 import time
 import re
 import os
+import tkinter as tk
 
 #para sair da automacao colocando o mouse no topo a esquerda da janela
 py.FAILSAFE = False
@@ -31,27 +32,27 @@ def logi(texto_):
                         
     with open("log.txt" , "a", encoding="utf-8-sig")  as log:
         log.write(f"\n{str(texto_)} - {str(agora())}")    
-
-contador_ultimo = 0
-#abrindo log.txt para leitura
-with open("log.txt" , "r") as log:
-    print("Abrindo log.txt para leitura;")
-    for linha in log:
-        #print(linha)
-        contador_ultimo = linha
-    contador_ultimo = contador_ultimo.split()
-    contador_ultimo = contador_ultimo[-1]
-    contador_ultimo = re.sub(r"\D","",contador_ultimo)
-    contador = int(contador_ultimo)
-    print(f"Contador com o sub: {contador_ultimo}\nContador atual: {contador}")
-    print(type(contador))
-
-try:              
-    print("============================== inicio ========================")
+        
+def execucao():
+    contador_ultimo = 0
+    varia = True
+    #abrindo log.txt para leitura
+    with open("log.txt" , "r") as log:
+        print("Abrindo log.txt para leitura;")
+        for linha in log:
+            #print(linha)
+            contador_ultimo = linha
+        contador_ultimo = contador_ultimo.split()
+        contador_ultimo = contador_ultimo[-1]
+        contador_ultimo = re.sub(r"\D","",contador_ultimo)
+        contador = int(contador_ultimo)
+        print(f"Contador com o sub: {contador_ultimo}\nContador atual: {contador}")
+        print(type(contador))
+                
     if not os.path.exists("log.txt"):
             with open("log.txt" , "a") as log:
                 log.write("")
-                        
+
     with open("log.txt" , "a", encoding="utf-8-sig")  as log:
         #log.write(f"\nAgora: {str(agora)}")           
         print("Agora: " , str(agora()))            
@@ -64,25 +65,23 @@ try:
         py.write("teams")
         pausa(1)
         print("Apertando enter;")
-        py.hotkey("enter")
-
+        py.hotkey("enter")  
         try:    
             while chave:
                 #tempo para clicar nas 2 opções:
-                pausa(30)
+                pausa(5)
                 if varia:
                     contador = contador + 1
-                    print(f"TEAMS PIETROW(346,254) - {agora()}:  {str(contador)}x")
-                    log.write(f"\n{agora()}: {str(contador)}x")
-                    #py.click(346,254 , duration=1)            
-                    py.click(148,314)
+                    print(f"183,166 - {agora()}:  {str(contador)}x")
+                    log.write(f"\n{agora()}: {str(contador)}x")        
+                    py.click(183,166, duration=1)
                     varia=False
                 elif (varia==False):
                     contador = contador + 1
-                    print(f"TEAMS RECENTE(232,443) - {agora()}:  {str(contador)}x")  
+                    print(f"183,166 - {agora()}:  {str(contador)}x")  
                     log.write(f"\n{agora()}: {str(contador)}x")                       
-                    #py.click(232,443 , duration=1)
-                    py.click(223,174 , duration=1) 
+                    #py.click(223,174 , duration=1)
+                    py.click(183,166, duration=1) 
                     varia=True
         except KeyboardInterrupt:            
             print("Interrompido pelo ctrl + c!!!")            
@@ -95,6 +94,14 @@ try:
             error = str("{agora()}\nError: {erro}")
             #logi(error)                
     log.close()
+
+
+
+
+
+try:              
+    print("============================== inicio ========================")
+    execucao()
 except Exception as erro:
     print(f"\n{agora()}\nError: {erro}")  
     error = str("{agora()}\nError: {erro}")
