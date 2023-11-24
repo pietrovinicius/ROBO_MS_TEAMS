@@ -6,6 +6,8 @@ import datetime
 import time
 import re
 import os
+import tkinter as tk
+import threading
 
 #para sair da automacao colocando o mouse no topo a esquerda da janela
 py.FAILSAFE = True
@@ -32,7 +34,7 @@ def logi(texto_):
     with open("log.txt" , "a", encoding="utf-8-sig")  as log:
         log.write(f"\n{str(texto_)} - {str(agora())}")    
         
-def main():
+def Executar():
     contador_ultimo = 0
     #abrindo log.txt para leitura
     with open("log.txt" , "r") as log:
@@ -70,7 +72,8 @@ def main():
             try:    
                 while chave:
                     #tempo para clicar nas 2 opções:
-                    pausa(90)
+                    pausa(10)
+                    global varia
                     if varia:
                         contador = contador + 1
                         print(f"183,166 - {agora()}:  {str(contador)}x")
@@ -102,7 +105,29 @@ def main():
         
         
 #"============================== inicio ========================"
+def interface():
+    root = tk.Tk()
+    root.maxsize(1080,1024)
+    root.geometry("400x200")
+    root.title("Janela Pricipal")
+    #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread        
+    fechar_thread = threading.Event()    
+    
+    #iniciando thread para usar na funcao Executar()    
+    threadExecutar = threading.Thread(target=Executar)
+    
+    #para interromper 
+    threadExecutar.daemon = True
+        
+    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , threadExecutar.start()])
+    bt_Iniciar.pack()    
 
+    bt_Sair = tk.Button(root, text="Fechar", command=lambda: [ print("Botao Fechar\nroot.destroy()\nfechar_thread.set()\n\n") , root.destroy(), fechar_thread.set()])
+    bt_Sair.pack()
+    
+    root.mainloop()  
+    
 if __name__ == "__main__":    
     print("============================== inicio ========================")
-    main()    
+    interface()
+    #Executar()    
