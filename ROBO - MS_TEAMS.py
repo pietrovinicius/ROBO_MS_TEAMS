@@ -32,71 +32,77 @@ def logi(texto_):
     with open("log.txt" , "a", encoding="utf-8-sig")  as log:
         log.write(f"\n{str(texto_)} - {str(agora())}")    
         
-    
+def main():
+    contador_ultimo = 0
+    #abrindo log.txt para leitura
+    with open("log.txt" , "r") as log:
+        print("Abrindo log.txt para leitura;")
+        for linha in log:
+            #print(linha)
+            contador_ultimo = linha
+        contador_ultimo = contador_ultimo.split()
+        contador_ultimo = contador_ultimo[-1]
+        contador_ultimo = re.sub(r"\D","",contador_ultimo)
+        contador = int(contador_ultimo)
+        print(f"Contador com o sub: {contador_ultimo}\nContador atual: {contador}")
+        print(type(contador))
 
-contador_ultimo = 0
-#abrindo log.txt para leitura
-with open("log.txt" , "r") as log:
-    print("Abrindo log.txt para leitura;")
-    for linha in log:
-        #print(linha)
-        contador_ultimo = linha
-    contador_ultimo = contador_ultimo.split()
-    contador_ultimo = contador_ultimo[-1]
-    contador_ultimo = re.sub(r"\D","",contador_ultimo)
-    contador = int(contador_ultimo)
-    print(f"Contador com o sub: {contador_ultimo}\nContador atual: {contador}")
-    print(type(contador))
+    try:              
+        print("============================== main() ========================")
+        if not os.path.exists("log.txt"):
+                with open("log.txt" , "a") as log:
+                    log.write("")
 
-try:              
+        with open("log.txt" , "a", encoding="utf-8-sig")  as log:
+            #log.write(f"\nAgora: {str(agora)}")           
+            print("Agora: " , str(agora()))            
+            #py.alert(title="==== Início ====" , text="Robo Inicializado: " + str(agora()) , timeout=2000) 
+            pausa(1)
+            print("hotkey win")
+            py.hotkey("win")
+            pausa(1)
+            print("Escrevendo teams")
+            py.write("teams")
+            pausa(1)
+            print("Apertando enter;")
+            py.hotkey("enter")
+
+            try:    
+                while chave:
+                    #tempo para clicar nas 2 opções:
+                    pausa(90)
+                    if varia:
+                        contador = contador + 1
+                        print(f"183,166 - {agora()}:  {str(contador)}x")
+                        log.write(f"\n{agora()}: {str(contador)}x")        
+                        py.click(183,166, duration=1)
+                        varia=False
+                    elif (varia==False):
+                        contador = contador + 1
+                        print(f"183,166 - {agora()}:  {str(contador)}x")  
+                        log.write(f"\n{agora()}: {str(contador)}x")                       
+                        #py.click(223,174 , duration=1)
+                        py.click(183,166, duration=1) 
+                        varia=True
+            except KeyboardInterrupt:            
+                print("Interrompido pelo ctrl + c!!!")            
+                print(f"log.close() - {agora()}:  {str(contador)}x\n==================================== FIM ====================================")
+                error = str("{agora()}\nError: {erro}")
+                #logi("Interrompido pelo ctrl + c!!!")
+            except Exception as erro:
+                log.close()
+                print(f"log.close() {agora()}\nErro: {erro=}, {type(erro)=}")  
+                error = str("{agora()}\nError: {erro}")
+                #logi(error)                
+        log.close()
+    except Exception as erro:
+        print(f"\n{agora()}\nError: {erro}")  
+        error = str("{agora()}\nError: {erro}")
+        #logi(error)
+        
+        
+#"============================== inicio ========================"
+
+if __name__ == "__main__":    
     print("============================== inicio ========================")
-    if not os.path.exists("log.txt"):
-            with open("log.txt" , "a") as log:
-                log.write("")
-                        
-    with open("log.txt" , "a", encoding="utf-8-sig")  as log:
-        #log.write(f"\nAgora: {str(agora)}")           
-        print("Agora: " , str(agora()))            
-        py.alert(title="==== Início ====" , text="Robo Inicializado: " + str(agora()) , timeout=5000) 
-        pausa(1)
-        print("hotkey win")
-        py.hotkey("win")
-        pausa(1)
-        print("Escrevendo teams")
-        py.write("teams")
-        pausa(1)
-        print("Apertando enter;")
-        py.hotkey("enter")
-
-        try:    
-            while chave:
-                #tempo para clicar nas 2 opções:
-                pausa(30)
-                if varia:
-                    contador = contador + 1
-                    print(f"183,166 - {agora()}:  {str(contador)}x")
-                    log.write(f"\n{agora()}: {str(contador)}x")        
-                    py.click(183,166, duration=1)
-                    varia=False
-                elif (varia==False):
-                    contador = contador + 1
-                    print(f"183,166 - {agora()}:  {str(contador)}x")  
-                    log.write(f"\n{agora()}: {str(contador)}x")                       
-                    #py.click(223,174 , duration=1)
-                    py.click(183,166, duration=1) 
-                    varia=True
-        except KeyboardInterrupt:            
-            print("Interrompido pelo ctrl + c!!!")            
-            print(f"log.close() - {agora()}:  {str(contador)}x\n==================================== FIM ====================================")
-            error = str("{agora()}\nError: {erro}")
-            #logi("Interrompido pelo ctrl + c!!!")
-        except Exception as erro:
-            log.close()
-            print(f"log.close() {agora()}\nErro: {erro=}, {type(erro)=}")  
-            error = str("{agora()}\nError: {erro}")
-            #logi(error)                
-    log.close()
-except Exception as erro:
-    print(f"\n{agora()}\nError: {erro}")  
-    error = str("{agora()}\nError: {erro}")
-    #logi(error)
+    main()    
