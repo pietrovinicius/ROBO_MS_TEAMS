@@ -1,6 +1,6 @@
 #05/10/2023
 #@PLima
-# ROBO - MICROSOFT TEAMS
+#ROBO - MICROSOFT TEAMS
 import pyautogui as py
 import datetime
 import time
@@ -14,7 +14,6 @@ py.FAILSAFE = True
 varia = True
 chave = True
 contador = 0
-statusThread = False
 
 def pausa(tempo):
     #print("time de:" , tempo)
@@ -126,30 +125,25 @@ def interface():
     root = tk.Tk()
     root.maxsize(1080,1024)
     root.geometry("400x200")
-    root.title("ROBO - MICROSOFT TEAMS")
+    root.title("Janela Pricipal")
+    #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread        
+    fechar_thread = threading.Event()    
     
-    def start():        
-        global statusThread
-        #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread
-        if statusThread:
-            print(f"Thread já foi iniciada, statusThread: \n{statusThread}")
-             
-        else:        
-            #iniciando thread para usar na funcao Executar()    
-            threadExecutar = threading.Thread(target=Executar).start()
-            #threadExecutar.start()
-            statusThread = True
-            print(f"statusThread: {statusThread}\nthreadExecutar.start()\n")    
-
+    #iniciando thread para usar na funcao Executar()    
+    threadExecutar = threading.Thread(target=Executar)
+    
+    #para interromper 
+    threadExecutar.daemon = True
         
-    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , start()])
-    bt_Iniciar.pack(fill="both", expand=True)    
+    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , threadExecutar.start()])
+    bt_Iniciar.pack()    
 
-    bt_Sair = tk.Button(root, text="Pausar", command=lambda: [ print("Botao Pausar") , pausar()])
-    bt_Sair.pack(fill="both", expand=True)
+    bt_Sair = tk.Button(root, text="Fechar", command=lambda: [ print("Botao Fechar\nroot.destroy()\nfechar_thread.set()\n\n") , root.destroy(), fechar_thread.set()])
+    bt_Sair.pack()
     
     root.mainloop()  
     
 if __name__ == "__main__":    
     print("============================== inicio ========================")
-    interface()    
+    interface()
+    #Executar()    
