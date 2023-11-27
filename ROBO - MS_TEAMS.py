@@ -39,79 +39,44 @@ def Executar():
     contador_ultimo = 0
     #abrindo log.txt para leitura
     global statusThread
-    
-    with open("log.txt" , "r") as log:
-        print("Abrindo log.txt para leitura;")
-        for linha in log:
-            #print(linha)
-            contador_ultimo = linha
-        contador_ultimo = contador_ultimo.split()
-        contador_ultimo = contador_ultimo[-1]
-        contador_ultimo = re.sub(r"\D","",contador_ultimo)
-        contador = int(contador_ultimo)
-        print(f"Contador com o sub: {contador_ultimo}\nContador atual: {contador}")
-        print(type(contador))
 
-    try:              
+    try:        
+        global varia
+        global statusThread   
+        print(f"varia: {varia}\nstatusThread: {statusThread}\n")   
         print("============================== Executar() ========================")
-        if not os.path.exists("log.txt"):
-                with open("log.txt" , "a") as log:
-                    log.write("")
-
-        with open("log.txt" , "a", encoding="utf-8-sig")  as log:
-            #log.write(f"\nAgora: {str(agora)}")           
-            print("Agora: " , str(agora()))            
-            #py.alert(title="==== Início ====" , text="Robo Inicializado: " + str(agora()) , timeout=2000) 
-            pausa(1)
-            print("hotkey win")
-            py.hotkey("win")
-            pausa(1)
-            print("Escrevendo teams")
-            py.write("teams")
-            pausa(1)
-            print("Apertando enter;")
-            py.hotkey("enter")
-
-            try:    
-                while chave:
-                    #tempo para clicar nas 2 opções:
-                    pausa(60)
-                    global varia
-                    global statusThread
-                    if varia and statusThread:
-                        contador = contador + 1
-                        print(f"183,166 - {agora()}:  {str(contador)}x")
-                        log.write(f"\n{agora()}: {str(contador)}x")        
-                        py.click(183,166, duration=1)
-                        varia=False
-                    elif (varia==False and statusThread):
-                        contador = contador + 1
-                        print(f"183,166 - {agora()}:  {str(contador)}x")  
-                        log.write(f"\n{agora()}: {str(contador)}x")                       
-                        #py.click(223,174 , duration=1)
-                        py.click(183,166, duration=1) 
-                        varia=True
-                    elif statusThread == False:
-                        print(f"statusThread: {statusThread}\n")
-                        #esse break abaixo esta finalizando o looping que prende a thread
-                        break
-            except KeyboardInterrupt:            
-                print("Interrompido pelo ctrl + c!!!")            
-                print(f"log.close() - {agora()}:  {str(contador)}x\n==================================== FIM ====================================")
-                error = str("{agora()}\nError: {erro}")                
-                logi("Interrompido pelo ctrl + c!!!")
-                exit()
-            except Exception as erro:
-                log.close()
-                print(f"log.close() {agora()}\nErro: {erro=}, {type(erro)=}")  
-                error = str("{agora()}\nError: {erro}")
-                logi(error)       
-                exit()         
-        log.close()
+        print("Agora: " , str(agora()))            
+        #py.alert(title="==== Início ====" , text="Robo Inicializado: " + str(agora()) , timeout=2000) 
+        pausa(1)
+        print("hotkey win")
+        py.hotkey("win")
+        pausa(1)
+        print("Escrevendo teams")
+        py.write("teams")
+        pausa(1)
+        print("Apertando enter;")
+        py.hotkey("enter")
+        while chave and statusThread:
+            #tempo para clicar nas 2 opções:
+            pausa(60)
+            if varia and statusThread:
+                contador = contador + 1
+                print(f"183,166 - {agora()}:  {str(contador)}x")                
+                py.click(183,166, duration=1)
+                varia=False
+            elif (varia==False and statusThread):
+                contador = contador + 1
+                print(f"183,166 - {agora()}:  {str(contador)}x")                                   
+                #py.click(223,174 , duration=1)
+                py.click(183,166, duration=1) 
+                varia=True
+            elif statusThread == False:
+                print(f"statusThread: {statusThread}\n")
+                #esse break abaixo esta finalizando o looping que prende a thread
+                break            
     except Exception as erro:
         print(f"\n{agora()}\nError: {erro}")  
         error = str("{agora()}\nError: {erro}")
-        logi(error)
         exit()
         
 def pausar():
