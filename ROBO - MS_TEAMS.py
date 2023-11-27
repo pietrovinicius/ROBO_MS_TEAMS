@@ -1,6 +1,6 @@
 #27/11/2023
 #@PLima
-# ROBO - MICROSOFT TEAMS
+#ROBO - MICROSOFT TEAMS
 import pyautogui as py
 import datetime
 import time
@@ -14,7 +14,6 @@ py.FAILSAFE = True
 varia = True
 chave = True
 contador = 0
-statusThread = False
 
 def pausa(tempo):
     #print("time de:" , tempo)
@@ -127,21 +126,15 @@ def interface():
     root.maxsize(400,200)
     root.minsize(400,200)
     root.geometry("400x200")
-    root.title("ROBO - MICROSOFT TEAMS")
+    root.title("Janela Pricipal")
+    #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread        
+    fechar_thread = threading.Event()    
     
-    def start():        
-        global statusThread
-        #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread
-        if statusThread:
-            print(f"Thread já foi iniciada, statusThread: \n{statusThread}")
-             
-        else:        
-            #iniciando thread para usar na funcao Executar()    
-            threadExecutar = threading.Thread(target=Executar).start()
-            #threadExecutar.start()
-            statusThread = True
-            print(f"statusThread: {statusThread}\nthreadExecutar.start()\n")    
-
+    #iniciando thread para usar na funcao Executar()    
+    threadExecutar = threading.Thread(target=Executar)
+    
+    #para interromper 
+    threadExecutar.daemon = True
         
     bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , lb_console.config(text="Robo inicializado!") , start()])
     bt_Iniciar.pack(fill="both", expand=True)    
