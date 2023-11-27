@@ -14,6 +14,7 @@ py.FAILSAFE = True
 varia = True
 chave = True
 contador = 0
+statusThread = False
 
 def pausa(tempo):
     #print("time de:" , tempo)
@@ -37,6 +38,8 @@ def logi(texto_):
 def Executar():
     contador_ultimo = 0
     #abrindo log.txt para leitura
+    global statusThread
+    
     with open("log.txt" , "r") as log:
         print("Abrindo log.txt para leitura;")
         for linha in log:
@@ -50,7 +53,7 @@ def Executar():
         print(type(contador))
 
     try:              
-        print("============================== main() ========================")
+        print("============================== Executar() ========================")
         if not os.path.exists("log.txt"):
                 with open("log.txt" , "a") as log:
                     log.write("")
@@ -72,36 +75,50 @@ def Executar():
             try:    
                 while chave:
                     #tempo para clicar nas 2 opções:
-                    pausa(10)
+                    pausa(90)
                     global varia
-                    if varia:
+                    global statusThread
+                    if varia and statusThread:
                         contador = contador + 1
                         print(f"183,166 - {agora()}:  {str(contador)}x")
                         log.write(f"\n{agora()}: {str(contador)}x")        
                         py.click(183,166, duration=1)
                         varia=False
-                    elif (varia==False):
+                    elif (varia==False and statusThread):
                         contador = contador + 1
                         print(f"183,166 - {agora()}:  {str(contador)}x")  
                         log.write(f"\n{agora()}: {str(contador)}x")                       
                         #py.click(223,174 , duration=1)
                         py.click(183,166, duration=1) 
                         varia=True
+                    elif statusThread == False:
+                        print(f"statusThread: {statusThread}\n")
+                        #esse break abaixo esta finalizando o looping que prende a thread
+                        break
             except KeyboardInterrupt:            
                 print("Interrompido pelo ctrl + c!!!")            
                 print(f"log.close() - {agora()}:  {str(contador)}x\n==================================== FIM ====================================")
-                error = str("{agora()}\nError: {erro}")
-                #logi("Interrompido pelo ctrl + c!!!")
+                error = str("{agora()}\nError: {erro}")                
+                logi("Interrompido pelo ctrl + c!!!")
+                exit()
             except Exception as erro:
                 log.close()
                 print(f"log.close() {agora()}\nErro: {erro=}, {type(erro)=}")  
                 error = str("{agora()}\nError: {erro}")
-                #logi(error)                
+                logi(error)       
+                exit()         
         log.close()
     except Exception as erro:
         print(f"\n{agora()}\nError: {erro}")  
         error = str("{agora()}\nError: {erro}")
-        #logi(error)
+        logi(error)
+        exit()
+        
+def pausar():
+    global statusThread
+    statusThread=False
+    print(f"global statusThread: {statusThread}")
+    print("============================== Pausar() ========================")
         
         
 #"============================== inicio ========================"
@@ -109,25 +126,30 @@ def interface():
     root = tk.Tk()
     root.maxsize(1080,1024)
     root.geometry("400x200")
-    root.title("Janela Pricipal")
-    #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread        
-    fechar_thread = threading.Event()    
+    root.title("ROBO - MICROSOFT TEAMS")
     
-    #iniciando thread para usar na funcao Executar()    
-    threadExecutar = threading.Thread(target=Executar)
-    
-    #para interromper 
-    threadExecutar.daemon = True
-        
-    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , threadExecutar.start()])
-    bt_Iniciar.pack()    
+    def start():        
+        global statusThread
+        #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread
+        if statusThread:
+            print(f"Thread já foi iniciada, statusThread: \n{statusThread}")
+             
+        else:        
+            #iniciando thread para usar na funcao Executar()    
+            threadExecutar = threading.Thread(target=Executar).start()
+            #threadExecutar.start()
+            statusThread = True
+            print(f"statusThread: {statusThread}\nthreadExecutar.start()\n")    
 
-    bt_Sair = tk.Button(root, text="Fechar", command=lambda: [ print("Botao Fechar\nroot.destroy()\nfechar_thread.set()\n\n") , root.destroy(), fechar_thread.set()])
-    bt_Sair.pack()
+        
+    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , start()])
+    bt_Iniciar.pack(fill="both", expand=True)    
+
+    bt_Sair = tk.Button(root, text="Pausar", command=lambda: [ print("Botao Pausar") , pausar()])
+    bt_Sair.pack(fill="both", expand=True)
     
     root.mainloop()  
     
 if __name__ == "__main__":    
     print("============================== inicio ========================")
-    interface()
-    #Executar()    
+    interface()    
