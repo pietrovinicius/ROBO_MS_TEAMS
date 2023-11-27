@@ -14,6 +14,7 @@ py.FAILSAFE = True
 varia = True
 chave = True
 contador = 0
+statusThread = False
 
 def pausa(tempo):
     #print("time de:" , tempo)
@@ -74,7 +75,7 @@ def Executar():
             try:    
                 while chave:
                     #tempo para clicar nas 2 opções:
-                    pausa(90)
+                    pausa(60)
                     global varia
                     global statusThread
                     if varia and statusThread:
@@ -126,26 +127,28 @@ def interface():
     root.maxsize(400,200)
     root.minsize(400,200)
     root.geometry("400x200")
-    root.title("Janela Pricipal")
-    #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread        
-    fechar_thread = threading.Event()    
+    root.title("ROBO - MICROSOFT TEAMS")
     
-    #iniciando thread para usar na funcao Executar()    
-    threadExecutar = threading.Thread(target=Executar)
-    
-    #para interromper 
-    threadExecutar.daemon = True
+    def start():        
+        global statusThread
+        #criando evento na thread, para ser usado apos ser setado, ser verificado e encerrar a thread
+        if statusThread:
+            print(f"Thread já foi iniciada, statusThread: \n{statusThread}")
+        else:        
+            #iniciando thread para usar na funcao Executar()    
+            threadExecutar = threading.Thread(target=Executar).start()
+            #threadExecutar.start()
+            statusThread = True
+            print(f"statusThread: {statusThread}\nthreadExecutar.start()\n")    
         
     bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , lb_console.config(text="Robo inicializado!") , start()])
-    bt_Iniciar.pack(fill="both", expand=True)    
+    bt_Iniciar.pack(fill="both", expand=True , padx=10 , pady=10)    
 
     bt_Sair = tk.Button(root, text="Pausar", command=lambda: [ print("Botao Pausar") , lb_console.config(text="Robo pausado!") , pausar()])
-    bt_Sair.pack(fill="both", expand=True)
+    bt_Sair.pack(fill="both", expand=True , padx=10 , pady=10)
     
     lb_console = tk.Label(root, text="...não inicializado...")
-    lb_console.pack(fill="both" , expand=True , pady=10) 
-    
-    
+    lb_console.pack(fill="both" , expand=True , pady=10)    
     
     root.mainloop()  
     
