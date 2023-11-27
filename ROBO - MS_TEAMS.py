@@ -1,4 +1,4 @@
-#05/10/2023
+#27/11/2023
 #@PLima
 # ROBO - MICROSOFT TEAMS
 import pyautogui as py
@@ -124,7 +124,8 @@ def pausar():
 #"============================== inicio ========================"
 def interface():
     root = tk.Tk()
-    root.maxsize(1080,1024)
+    root.maxsize(400,200)
+    root.minsize(400,200)
     root.geometry("400x200")
     root.title("ROBO - MICROSOFT TEAMS")
     
@@ -142,11 +143,16 @@ def interface():
             print(f"statusThread: {statusThread}\nthreadExecutar.start()\n")    
 
         
-    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , start()])
+    bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , lb_console.config(text="Robo inicializado!") , start()])
     bt_Iniciar.pack(fill="both", expand=True)    
 
-    bt_Sair = tk.Button(root, text="Pausar", command=lambda: [ print("Botao Pausar") , pausar()])
+    bt_Sair = tk.Button(root, text="Pausar", command=lambda: [ print("Botao Pausar") , lb_console.config(text="Robo pausado!") , pausar()])
     bt_Sair.pack(fill="both", expand=True)
+    
+    lb_console = tk.Label(root, text="...não inicializado...")
+    lb_console.pack(fill="both" , expand=True , pady=10) 
+    
+    
     
     root.mainloop()  
     
