@@ -10,3 +10,7 @@ re
 os
 sys
 
+comando para gerar o exe:
+python .\setup.py build
+
+feito isso, mova a imagem "ms_teams001.png" para a mesma pasta do exe

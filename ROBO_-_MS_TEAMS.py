@@ -84,9 +84,9 @@ def pausar():
 #"============================== inicio ========================"
 def interface():
     root = tk.Tk()
-    root.maxsize(400,250)
-    root.minsize(400,200)
-    root.geometry("400x250")
+    root.maxsize(360,250)
+    root.minsize(360,200)
+    root.geometry("360x250")
     root.title("ROBO - MICROSOFT TEAMS")
     
     def start():        
@@ -106,10 +106,10 @@ def interface():
     lb_barra_superior.pack()
         
     bt_Iniciar = tk.Button(root, text="Iniciar", command=lambda: [ print("Botao Iniciar") , lb_console.config(text="Robo inicializado!") , start()])
-    bt_Iniciar.pack(fill="both", expand=True , padx=1 , pady=5)    
+    bt_Iniciar.pack(fill="both", expand=True , padx=100 , pady=5 )    
 
     bt_Sair = tk.Button(root, text="Pausar", command=lambda: [ print("Botao Pausar") , lb_console.config(text="Robo pausado!") , pausar()])
-    bt_Sair.pack(fill="both", expand=True , padx=1 , pady=5)
+    bt_Sair.pack(fill="both", expand=True , padx=100 , pady=5)
     
     lb_console = tk.Label(root, text="...não inicializado...")
     lb_console.pack(fill="both" , expand=True , pady=10)    
